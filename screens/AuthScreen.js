@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react'
 import { useMutation } from 'react-query'
-import { View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, AsyncStorage } from 'react-native'
 import authService from '../services/api/AuthService'
 import { AuthContext } from '../providers/AuthProvider'
 
@@ -11,7 +11,10 @@ const AuthScreen = () => {
   const { setUser } = useContext(AuthContext)
 
   const [login] = useMutation(authService.logIn, {
-    onSuccess: response => console.log(response.data)
+    onSuccess: ({ data }) => {
+      AsyncStorage.setItem('user', JSON.stringify(data))
+      setUser(data)
+    }
   })
 
   return (
@@ -32,9 +35,7 @@ const AuthScreen = () => {
         onChangeText={text => setPassword(text)}
       />
       <TouchableOpacity
-        onPress={() => {
-          setUser(() => login({ email, password }))
-        }}
+        onPress={() => login({ email, password })}
       >
         <Text style={styles.loginButton}>Log in</Text>
       </TouchableOpacity>

@@ -18,7 +18,7 @@ const AuthLoadingScreen = () => {
   const checkLoggedUser = async () => {
     try {
       const userString = await AsyncStorage.getItem('user')
-      if (userString) setUser(userString)
+      if (userString) setUser(JSON.parse(userString))
       setIsLoadingUser(false)
     } catch (error) {
       console.log(error)

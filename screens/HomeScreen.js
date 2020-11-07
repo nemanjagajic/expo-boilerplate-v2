@@ -1,12 +1,20 @@
-import React from 'react'
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
+import React, { useContext } from 'react'
+import { View, Text, StyleSheet, TouchableOpacity, AsyncStorage } from 'react-native'
+import {AuthContext} from '../providers/AuthProvider'
 
 const HomeScreen = () => {
+  const { setUser } = useContext(AuthContext)
+
+  const logOut = () => {
+    AsyncStorage.removeItem('user')
+    setUser(null)
+  }
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Home Screen</Text>
       <TouchableOpacity
-        onPress={() => {}}
+        onPress={logOut}
         style={styles.logoutButton}
       >
         <Text>Log out</Text>
